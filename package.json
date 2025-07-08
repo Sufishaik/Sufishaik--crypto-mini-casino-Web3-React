@@ -4,11 +4,9 @@
   "version": "1.0.2",
   "description": "",
   "scripts": {
-    "start": "npm run server | npm run client",
+    "start": "vite",
     "build": "vite build",
     "client": "vite",
-    "server": "node ./api/app.js",
-    "prepare": "npm run server | npm run client",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
