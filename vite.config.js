@@ -5,27 +5,21 @@ const ENV_PREFIX = ['VITE_']
 
 export default defineConfig(() => ({
   envPrefix: ENV_PREFIX,
+  base: './',
   server: { port: 4001, host: true },
   assetsInclude: ["**/*.glb"],
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    assetsDir: 'assets',
     rollupOptions: {
-      external: (id) => {
-        // Externalize problematic modules
-        if (id.includes('standardized-audio-context')) return true;
-        if (id.includes('audio-worklet')) return true;
-        if (id === 'fs' || id === 'path' || id === 'os') return true;
-        return false;
-      },
       output: {
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            if (id.includes('@solana')) return 'solana';
-            if (id.includes('@coral-xyz')) return 'anchor';
-            if (id.includes('react')) return 'react';
-            return 'vendor';
-          }
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          solana: ['@solana/web3.js'],
         }
       }
     },
@@ -42,11 +36,7 @@ export default defineConfig(() => ({
   },
   optimizeDeps: {
     include: ['buffer'],
-    exclude: [
-      'standardized-audio-context',
-      'audio-worklet-polyfill',
-      '@coral-xyz/anchor/dist/cjs/nodewallet'
-    ],
+    exclude: ['standardized-audio-context'],
   },
   plugins: [
     react({ jsxRuntime: 'classic' }),
