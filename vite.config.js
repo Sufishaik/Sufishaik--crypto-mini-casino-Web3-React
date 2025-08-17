@@ -5,21 +5,20 @@ const ENV_PREFIX = ['VITE_']
 
 export default defineConfig(() => ({
   envPrefix: ENV_PREFIX,
-  base: './',
   server: { port: 4001, host: true },
   assetsInclude: ["**/*.glb"],
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    assetsDir: 'assets',
     rollupOptions: {
+      external: [
+        'standardized-audio-context',
+        './evaluate-audio-worklet-globalThis-scope-function'
+      ],
       output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          solana: ['@solana/web3.js'],
+        globals: {
+          'standardized-audio-context': 'StandardizedAudioContext',
+          './evaluate-audio-worklet-globalThis-scope-function': 'AudioWorkletStub'
         }
       }
     },
