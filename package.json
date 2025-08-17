@@ -4,12 +4,11 @@
   "version": "1.0.2",
   "description": "",
   "scripts": {
-    "start": "npm run server | npm run client",
     "build": "vite build",
+    "start": "npm run build && node api/app.js",
+    "dev": "npm run client",
     "client": "vite",
-    "server": "node ./api/app.js",
-    "prepare": "npm run server | npm run client",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "server": "node api/app.js"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.27.0",
